@@ -10,6 +10,9 @@ import CreatePostPage from './pages/CreatePostPage'
 import EditPostPage from './pages/EditPostPage'
 import PostDetailPage from './pages/PostDetailPage'
 import NotFoundPage from './pages/NotFoundPage'
+import ProtectedRoute from './components/ProtectedRoute'
+import PublicRoute from './components/PublicRoute'
+import PublicProfilePage from './pages/PublicProfilePage'
 
 function App() {
   return (
@@ -17,13 +20,39 @@ function App() {
       <MainLayout>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/posts/new" element={<CreatePostPage />} />
+
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <LoginPage />
+              </PublicRoute>
+            }
+          />
+
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <RegisterPage />
+              </PublicRoute>
+            }
+          />
+
+          <Route path="/profile" element={
+            <ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+          <Route path="/posts/new" element={
+            <ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
+          <Route path="/posts/:id/edit" element={
+            <ProtectedRoute><EditPostPage /></ProtectedRoute>} />
+
           <Route path="/posts/:id" element={<PostDetailPage />} />
-          <Route path="/posts/:id/edit" element={<EditPostPage />} />
           <Route path="*" element={<NotFoundPage />} />
+          <Route
+            path="/users/:username"
+            element={<PublicProfilePage />}
+          />
+
         </Routes>
       </MainLayout>
     </BrowserRouter>

@@ -5,18 +5,17 @@ import { useAuth } from '../context/AuthContext'
 
 function RegisterPage() {
   const navigate = useNavigate()
+  const { login } = useAuth()
 
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
     bio: '',
-    profileImageUrl: '',
   })
 
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const { login } = useAuth()
 
   function handleChange(e) {
     setFormData({
@@ -32,107 +31,138 @@ function RegisterPage() {
 
     try {
       const response = await api.post('/auth/register', formData)
-
       login(response.data.token)
-
       navigate('/')
     } catch (err) {
-      setError(
-        err.response?.data?.message || 'Registration failed. Please try again.'
-      )
+      setError(err.response?.data?.message || 'Registration failed. Please try again.')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-2xl shadow-md p-8">
-      <h1 className="text-3xl font-bold text-gray-900 text-center">
-        Create Account
-      </h1>
+    <div className="max-w-5xl mx-auto bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-2">
+        <section className="bg-black text-white p-10 md:p-12 flex flex-col justify-between">
+          <div>
+            <span className="inline-flex bg-white/10 text-white px-4 py-2 rounded-full text-sm font-medium">
+              Join the platform
+            </span>
 
-      <p className="text-gray-500 text-center mt-2">
-        Join the platform and start publishing your own posts.
-      </p>
+            <h1 className="mt-6 text-4xl font-bold leading-tight">
+              Create your profile and start sharing your stories.
+            </h1>
 
-      {error && (
-        <div className="mt-6 bg-red-50 text-red-600 px-4 py-3 rounded-lg text-sm">
-          {error}
-        </div>
-      )}
+            <p className="mt-5 text-gray-300 leading-8">
+              Register to publish your own articles, manage your profile and
+              become part of a community-driven writing space.
+            </p>
+          </div>
 
-      <form onSubmit={handleSubmit} className="mt-8 space-y-5">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Username
-          </label>
-          <input
-            name="username"
-            type="text"
-            value={formData.username}
-            onChange={handleChange}
-            placeholder="Choose a username"
-            className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
-          />
-        </div>
+          <div className="mt-10 rounded-3xl bg-white/10 p-6">
+            <p className="text-sm text-gray-300">
+              Start with one idea
+            </p>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Email
-          </label>
-          <input
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter your email"
-            className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
-          />
-        </div>
+            <p className="mt-2 text-2xl font-bold">
+              Turn it into an article.
+            </p>
+          </div>
+        </section>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Password
-          </label>
-          <input
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Create a password"
-            className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
-          />
-        </div>
+        <section className="p-8 md:p-12">
+          <h2 className="text-3xl font-bold text-gray-950">
+            Create Account
+          </h2>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Bio
-          </label>
-          <textarea
-            name="bio"
-            value={formData.bio}
-            onChange={handleChange}
-            placeholder="Tell us a little about yourself"
-            rows="3"
-            className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black resize-none"
-          />
-        </div>
+          <p className="text-gray-500 mt-2">
+            Fill in your details and start writing today.
+          </p>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-black text-white py-3 rounded-lg font-medium hover:opacity-90 transition disabled:opacity-50"
-        >
-          {loading ? 'Creating account...' : 'Register'}
-        </button>
-      </form>
+          {error && (
+            <div className="mt-6 bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-2xl text-sm">
+              {error}
+            </div>
+          )}
 
-      <p className="text-center text-gray-600 mt-6">
-        Already have an account?{' '}
-        <Link to="/login" className="text-black font-semibold hover:underline">
-          Login
-        </Link>
-      </p>
+          <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+            <div>
+              <label className="block text-sm font-semibold text-gray-800 mb-2">
+                Username
+              </label>
+
+              <input
+                name="username"
+                type="text"
+                value={formData.username}
+                onChange={handleChange}
+                placeholder="Choose a username"
+                className="w-full border border-gray-200 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-black placeholder:text-gray-400"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-800 mb-2">
+                Email
+              </label>
+
+              <input
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                className="w-full border border-gray-200 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-black placeholder:text-gray-400"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-800 mb-2">
+                Password
+              </label>
+
+              <input
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Create a password"
+                className="w-full border border-gray-200 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-black placeholder:text-gray-400"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-800 mb-2">
+                Bio
+              </label>
+
+              <textarea
+                name="bio"
+                value={formData.bio}
+                onChange={handleChange}
+                placeholder="Tell readers a little about yourself"
+                rows="4"
+                className="w-full border border-gray-200 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-black resize-none placeholder:text-gray-400"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-black text-white py-3.5 rounded-2xl font-medium hover:opacity-90 transition disabled:opacity-50"
+            >
+              {loading ? 'Creating account...' : 'Create Account'}
+            </button>
+          </form>
+
+          <p className="text-center text-gray-600 mt-8">
+            Already have an account?{' '}
+            <Link to="/login" className="text-black font-semibold hover:underline">
+              Login
+            </Link>
+          </p>
+        </section>
+      </div>
     </div>
   )
 }
