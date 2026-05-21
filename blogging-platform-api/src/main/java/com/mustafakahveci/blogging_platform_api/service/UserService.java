@@ -1,6 +1,7 @@
 package com.mustafakahveci.blogging_platform_api.service;
 
 import com.mustafakahveci.blogging_platform_api.dto.PostResponse;
+import com.mustafakahveci.blogging_platform_api.dto.UserPublicProfileResponse;
 import com.mustafakahveci.blogging_platform_api.dto.UserResponse;
 import com.mustafakahveci.blogging_platform_api.exception.ResourceNotFoundException;
 import com.mustafakahveci.blogging_platform_api.model.Post;
@@ -80,12 +81,32 @@ public class UserService {
         return mapToResponse(updatedUser);
     }
 
+    public UserPublicProfileResponse getPublicProfileByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
+
+        List<PostResponse> posts = postRepository.findByAuthorId(user.getId())
+                .stream()
+                .map(this::mapPostToResponse)
+                .toList();
+
+        return new UserPublicProfileResponse(
+                user.getId(),
+                user.getUsername(),
+                user.getBio(),
+                user.getProfileImageUrl(),
+                user.getCreatedAt(),
+                posts
+        );
+    }
+
     private PostResponse mapPostToResponse(Post post) {
         return new PostResponse(
                 post.getId(),
                 post.getTitle(),
                 post.getContent(),
                 post.getCategory(),
+                post.getImageUrl(),
                 post.getAuthor().getId(),
                 post.getAuthor().getUsername(),
                 post.getCreatedAt(),

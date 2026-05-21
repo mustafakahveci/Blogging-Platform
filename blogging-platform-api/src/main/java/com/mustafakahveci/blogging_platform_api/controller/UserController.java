@@ -2,9 +2,11 @@ package com.mustafakahveci.blogging_platform_api.controller;
 
 import com.mustafakahveci.blogging_platform_api.dto.PostResponse;
 import com.mustafakahveci.blogging_platform_api.dto.UpdateProfileRequest;
+import com.mustafakahveci.blogging_platform_api.dto.UserPublicProfileResponse;
 import com.mustafakahveci.blogging_platform_api.dto.UserResponse;
 import com.mustafakahveci.blogging_platform_api.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,6 +43,13 @@ public class UserController {
             @RequestBody UpdateProfileRequest request
     ) {
         return userService.updateCurrentUserProfile(request);
+    }
+
+    @GetMapping("/public/{username}")
+    public ResponseEntity<UserPublicProfileResponse> getPublicProfileByUsername(
+            @PathVariable String username
+    ) {
+        return ResponseEntity.ok(userService.getPublicProfileByUsername(username));
     }
 
 }

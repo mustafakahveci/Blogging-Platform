@@ -44,6 +44,7 @@ public class PostService {
                 .content(request.content())
                 .category(request.category())
                 .author(author)
+                .imageUrl(request.imageUrl())
                 .build();
 
         Post savedPost = postRepository.save(post);
@@ -67,6 +68,7 @@ public class PostService {
         post.setTitle(request.title());
         post.setContent(request.content());
         post.setCategory(request.category());
+        post.setImageUrl(request.imageUrl());
 
         Post updatedPost = postRepository.save(post);
 
@@ -95,6 +97,7 @@ public class PostService {
                 post.getTitle(),
                 post.getContent(),
                 post.getCategory(),
+                post.getImageUrl(),
                 post.getAuthor().getId(),
                 post.getAuthor().getUsername(),
                 post.getCreatedAt(),

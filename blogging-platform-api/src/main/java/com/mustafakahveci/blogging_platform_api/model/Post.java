@@ -32,6 +32,9 @@ public class Post {
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
+    @Column(length = 1000)
+    private String imageUrl;
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
 

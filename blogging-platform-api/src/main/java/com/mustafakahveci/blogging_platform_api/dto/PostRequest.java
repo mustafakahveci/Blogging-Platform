@@ -13,7 +13,9 @@ public record PostRequest(
         String content,
 
         @NotNull(message = "Category cannot be null")
-        Category category
+        Category category,
+
+        String imageUrl
 
 ) {
 }

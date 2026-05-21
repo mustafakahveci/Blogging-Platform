@@ -9,6 +9,7 @@ public record PostResponse(
         String title,
         String content,
         Category category,
+        String imageUrl,
         Long authorId,
         String authorUsername,
         LocalDateTime createdAt,
